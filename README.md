@@ -36,6 +36,14 @@ Where we can get paths to the final files:
 }
 ```
 
+Also checked on HPC
+
+```bash
+module load sprocket
+sprocket run workflow.wdl --target main infile="data/alice.txt" -o results
+#> picked up a standard node, good
+```
+
 TODO
 
 ```bash
