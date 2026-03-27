@@ -3,19 +3,18 @@
 #BSUB -n 1
 #BSUB -o out.%J
 #BSUB -e err.%J
-#BSUB -J NXFL_TINY
+#BSUB -J SPROCKET_TINY
 #BSUB -N
 ####BSUB -u username@stjude.org
 
 # Please do not remove this line
 source /etc/bashrc.modules
 
-# Load Nextflow dependencies
-source /home/jchang99/.bashrc
-conda activate nf-env
+# Load modules
+module load sprocket
 
-nextflow run main.nf \
-  --infiles "data/*.txt" \
-  -with-timeline timeline_hpc.html \
-  -config stjude.config
+sprocket run workflow.wdl \
+  --target main \
+  'infiles=["data/alice.txt","data/bob.txt","data/charlie.txt"]' \
+  -o results
 
