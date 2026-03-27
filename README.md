@@ -49,17 +49,11 @@ Also checked on HPC
 
 ```bash
 module load sprocket
-sprocket run workflow.wdl --target main infile="data/alice.txt" -o results
+sprocket run workflow.wdl --target main 'infiles=["data/alice.txt","data/bob.txt","data/charlie.txt"]' -o results
 #> picked up a standard node, good
+#> there is a local sprocket.toml that loads (look up specification)
 ```
 
-TODO
-
-```bash
-# sprocket run workflow.wdl --target main infile="data/*.txt" # NOOP, did not expand input files
-# TODO figure out how to pass in a data.table of inputs (similar to Terra) to run in parallel
-# TODO or if it requires coding in a scatter operation, best practices for defining inputs?
-```
 
 # LSF
 
@@ -67,5 +61,12 @@ Or submit to LSF with
 
 ```bash
 bsub < submit_job.lsf
+# Good: Submitted 1 main job and 3 child jobs for alice, bob, and charlie
 ```
 
+# Note on parallelization
+
+Preferentially use scatter-gather in the workflow.
+
+* Perhaps explore pros/cons of supporting Terra.bio style data.tables.
+* Perhaps explore pros/cons of supporting globs `data/*.txt`
