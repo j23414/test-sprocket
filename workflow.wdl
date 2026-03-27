@@ -2,22 +2,25 @@ version 1.2
 
 workflow main {
   input {
-    File infile
+    Array[File] infiles
   }
 
-  call ADD_GREETING {
-    input:
-      infile = infile
+  scatter(infile in infiles){
+    call ADD_GREETING {
+      input:
+        infile = infile
+   }
+
+    call ADD_FAREWELL {
+      input:
+        infile = ADD_GREETING.outfile
+    }
   }
 
-  call ADD_FAREWELL {
-    input:
-      infile = ADD_GREETING.outfile
-  }
 
   output {
-    File final_letter = ADD_FAREWELL.outfile
-    File debug_file = ADD_GREETING.outfile
+    Array[File] final_letter = ADD_FAREWELL.outfile
+    Array[File] debug_file = ADD_GREETING.outfile
   }
 }
 
